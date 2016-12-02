@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from PyQt4.QtGui import QAction,QDialog
-from PyQt4.QtGui import QVBoxLayout,QHBoxLayout
-from PyQt4.QtGui import QLabel,QDialogButtonBox
-from PyQt4.QtGui import QLineEdit,QPushButton
+from PyQt4.QtGui import QVBoxLayout,QHBoxLayout,QGridLayout
+from PyQt4.QtGui import QLabel,QDialogButtonBox,QCheckBox
+from PyQt4.QtGui import QLineEdit,QPushButton,QSpinBox
 from PyQt4.QtGui import QTableView,QStandardItemModel,QStandardItem
 
 import numpy as np
@@ -52,6 +52,21 @@ class dlg_main(QDialog):
         self.HBL_layername.addWidget(self.LiE_layername)
         self.VBL_main.addLayout(self.HBL_layername)
         
+        self.GrL_config = QGridLayout()
+        
+        self.Lab_recopt_title = QLabel(u"レコードオプション")
+        self.GrL_config.addWidget(self.Lab_recopt_title, 0, 0)
+        
+        self.HBL_recopt = QHBoxLayout()
+        self.Lab_recopt = QLabel(u"無視するヘッダー行")
+        self.SpB_recopt = QSpinBox()
+        self.ChB_recopt = QCheckBox()
+        self.ChB_recopt.setText(u"最初のレコードはフィールド名を保持している")
+        
+         
+        
+        
+        
         
         
         
@@ -88,16 +103,15 @@ class dlg_csv_error(QDialog):
         
         self.DBB_main.rejected.connect(self.close)
         
-    def load_error_table(self,header,e_ind,e_table):
-        self.model_content.clear()
+def load_table(self,model_content,header,ind,table):
+    model_content.clear()
+    model_content.setHorizontalHeaderLabels(header)
         
-        self.model_content.setHorizontalHeaderLabels(header)
-        
-        for hrow in e_table:
+    for hrow in table:
             items = [ QStandardItem(field) for field in hrow]
             self.model_content.appendRow(items)
             
-        self.model_content.setVerticalHeaderLabels((e_ind+1).astype(np.str).tolist())
+    model_content.setVerticalHeaderLabels((ind+1).astype(np.str).tolist())
         
     
         
