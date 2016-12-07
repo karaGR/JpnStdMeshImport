@@ -268,7 +268,6 @@ class dlg_main(QDialog):
         uri.addQueryItem("delimiter",",")
         uri.addQueryItem("wktField",str(self.csv_dat_str.shape[1] + 1))
         uri.addQueryItem("encoding",self.EF_dia.encoding())        
-        uri.addQueryItem("skipLines",str(self.SpB_recopt.value()))
         
         if self.ChB_recopt.checkState() == 2:
             uri.addQueryItem("useHeader","yes")
