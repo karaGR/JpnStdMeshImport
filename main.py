@@ -59,7 +59,7 @@ class dlg_main(QDialog):
         self.kukaku_dict[u"10分の１細分地域メッシュ"] = 10   
         
         self.dat_str = np.array([])
-        self.csv_header = np.array([])
+        self.table_header = np.array([])
         self.csv_dat_str = np.array([])
         
         self.EF_dia = myFileDialog(self)
@@ -158,16 +158,19 @@ class dlg_main(QDialog):
             pass
         else:
             if  self.ChB_recopt.checkState() == 0:
-                self.csv_header = np.array(["field_{0}".format(x) for x in np.arange(0,self.dat_str.shape[1])])
+                csv_header = np.array(["field_{0}".format(x) for x in np.arange(0,self.dat_str.shape[1])])
                 self.csv_dat_str = self.dat_str[(self.SpB_recopt.value()):,]
             else:
-                self.csv_header = self.dat_str[self.SpB_recopt.value(),]
+                csv_header = self.dat_str[self.SpB_recopt.value(),]
                 self.csv_dat_str =self.dat_str[(self.SpB_recopt.value()+1):,] 
                 
             self.clear()
             
-            load_table(self.model_content, self.csv_header, np.arange(0,11), self.csv_dat_str) 
-            self.CoB_mesh_field.addItems(self.csv_header)
+            self.table_header = np.array([hstr if hstr != u"" else 'field_{0}'.format(i) for i,hstr in enumerate(csv_header)])
+            
+            
+            load_table(self.model_content, self.table_header, np.arange(0,11), self.csv_dat_str) 
+            self.CoB_mesh_field.addItems(self.table_header)
         
     def clear(self):
         self.model_content.clear()
@@ -183,19 +186,19 @@ class dlg_main(QDialog):
         
             if self.check_decimal():
                 self.dlg_csv_error.LB_caution.setText(u"以下のデータのメッシュコードに空白\nまたは数値以外の文字が含まれています")
-                load_table(self.dlg_csv_error.model_content,self.csv_header, self.e_ind, self.csv_dat_str)
+                load_table(self.dlg_csv_error.model_content,self.table_header, self.e_ind, self.csv_dat_str)
                 self.dlg_csv_error.show()
             elif self.check_digit():
                 str = u"以下のデータのメッシュコードの桁数が不正です\n"
                 str += u'{0}コードは{1}桁の整数です。'.format(self.CoB_mesh_category.currentText(),
                                                   self.kukaku_dict[self.CoB_mesh_category.currentText()])
                 self.dlg_csv_error.LB_caution.setText(str)
-                load_table(self.dlg_csv_error.model_content,self.csv_header, self.e_ind, self.csv_dat_str)
+                load_table(self.dlg_csv_error.model_content,self.table_header, self.e_ind, self.csv_dat_str)
                 self.dlg_csv_error.show()
             elif self.check_unique():
                 str = u'以下のデータのメッシュコードが重複しています'
                 self.dlg_csv_error.LB_caution.setText(str)
-                load_table(self.dlg_csv_error.model_content,self.csv_header, self.e_ind, self.csv_dat_str)
+                load_table(self.dlg_csv_error.model_content,self.teble_header, self.e_ind, self.csv_dat_str)
                 self.dlg_csv_error.show()
                     
             else:
@@ -233,7 +236,8 @@ class dlg_main(QDialog):
             return False
         
     def create_tmp_csv(self):
-        mesh_cind = np.where(self.csv_header==self.CoB_mesh_field.currentText())
+
+
         
         m_wkt = mesh_wkt(self.CoB_mesh_category.currentText())
         
