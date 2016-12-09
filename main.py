@@ -256,11 +256,11 @@ class dlg_main(QDialog):
             
         if self.ChB_recopt.checkState() == 2:
             header = next(reader,None)
-            header.append("wkt")
+            header.insert(0,"wkt")
             writer.writerow(header)
         
         for hrow in csv.reader(in_fp):
-            hrow.append(m_wkt.res_wkt(hrow[0]))
+            hrow.insert(0,m_wkt.res_wkt(hrow[0]))
             writer.writerow(hrow)
             
         in_fp.close()
@@ -270,7 +270,7 @@ class dlg_main(QDialog):
         uri = QUrl.fromLocalFile(self.outfile_qstr)
         uri.addQueryItem("type","csv")
         uri.addQueryItem("delimiter",",")
-        uri.addQueryItem("wktField",str(self.csv_dat_str.shape[1] + 1))
+        uri.addQueryItem("wktField","1")
         uri.addQueryItem("encoding",self.EF_dia.encoding())        
         
         if self.ChB_recopt.checkState() == 2:
