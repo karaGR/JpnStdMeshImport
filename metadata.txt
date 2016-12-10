@@ -1,0 +1,8 @@
+[general]
+name=JpnStdMeshImport
+description=標準地域メッシュインポートツール
+qgisMinimumVersion=2.0.0
+version=0.1.1
+icon=icon.png
+auther=karaGR
+homepade=http://　
