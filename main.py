@@ -198,7 +198,7 @@ class dlg_main(QDialog):
             elif self.check_unique():
                 str = u'以下のデータのメッシュコードが重複しています'
                 self.dlg_csv_error.LB_caution.setText(str)
-                load_table(self.dlg_csv_error.model_content,self.teble_header, self.e_ind, self.csv_dat_str)
+                load_table(self.dlg_csv_error.model_content,self.table_header, self.e_ind, self.csv_dat_str)
                 self.dlg_csv_error.show()
                     
             else:
